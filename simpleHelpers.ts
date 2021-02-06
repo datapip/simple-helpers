@@ -50,21 +50,11 @@ interface Window {
                 return result;
             }
 
-            name = name + "=";
-            const cookies = window.document.cookie.split(';');
+            result = self.string.get(document.cookie, name)[0];
             
-            for (let i in cookies) {
-
-                const cookie = cookies[i].trim();
-
-                if(cookie.indexOf(name) === 0) {
-
-                    const value = cookie.substring(name.length, cookie.length);
-                    result = (decode) ? (decodeURIComponent(value)) : (value);
-
-                }
-
-            };
+            if(decode) {
+                result = decodeURIComponent(result);
+            }
 
             return result;
         },
@@ -169,15 +159,9 @@ interface Window {
                 return result;
             }
            
-            key = key + "=";
-            const queries = (querystring.charAt(0)==="?") ? (querystring.slice(1).split("&")) : (querystring.split("&"));
+            querystring = (querystring.charAt(0)==="?") ? (querystring.slice(1)) : (querystring);
             
-            for (let i in queries) {
-                const pair = queries[i];
-                if(pair.indexOf(key) === 0) {
-                    result.push(pair.slice(key.length, pair.length));
-                }
-            };
+            result = self.string.get(querystring, key, "=", "&")
 
             return result;
         },
@@ -296,20 +280,51 @@ interface Window {
     }
 
 
-    self.text = {
+    self.string = {
 
         /**
          * Cleans provided text from unnecessary whitespace.
          * @param {string} text
          * @returns {string} 
          */
-        clean: (text: string): string => {
+        get: (input: string, key: string, separator: string = "=", delimiter: string = ";"): string[] => {
 
-            if(!self.utils.__check(text, "text")) {
+            let result: string[] = [];
+
+            if(!self.utils.__check(input, "input")) {
+                return result;
+            }
+
+            if(!self.utils.__check(key, "key")) {
+                return result;
+            }
+
+            key = key + separator;
+
+            const chunks = input.split(delimiter);
+            
+            for (let i in chunks) {
+                const pair = self.string.clean(chunks[i]);
+                if(pair.indexOf(key) === 0) {
+                    result.push(pair.slice(key.length, pair.length));
+                }
+            }
+
+            return result;
+        },
+
+        /**
+         * Cleans provided text from unnecessary whitespace.
+         * @param {string} input
+         * @returns {string} 
+         */
+        clean: (input: string): string => {
+
+            if(!self.utils.__check(input, "input")) {
                 return "";
             }
 
-            return text.replace(/\s+/g, ' ').trim();
+            return input.replace(/\s+/g, ' ').trim();
 
         }
 

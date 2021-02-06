@@ -31,16 +31,10 @@
             if (!self.utils.__check(name, "name")) {
                 return result;
             }
-            name = name + "=";
-            var cookies = window.document.cookie.split(';');
-            for (var i in cookies) {
-                var cookie = cookies[i].trim();
-                if (cookie.indexOf(name) === 0) {
-                    var value = cookie.substring(name.length, cookie.length);
-                    result = (decode) ? (decodeURIComponent(value)) : (value);
-                }
+            result = self.string.get(document.cookie, name)[0];
+            if (decode) {
+                result = decodeURIComponent(result);
             }
-            ;
             return result;
         },
         /**
@@ -131,15 +125,8 @@
             if (!self.utils.__check(key, "key")) {
                 return result;
             }
-            key = key + "=";
-            var queries = (querystring.charAt(0) === "?") ? (querystring.slice(1).split("&")) : (querystring.split("&"));
-            for (var i in queries) {
-                var pair = queries[i];
-                if (pair.indexOf(key) === 0) {
-                    result.push(pair.slice(key.length, pair.length));
-                }
-            }
-            ;
+            querystring = (querystring.charAt(0) === "?") ? (querystring.slice(1)) : (querystring);
+            result = self.string.get(querystring, key, "=", "&");
             return result;
         },
         /**
@@ -240,17 +227,42 @@
             return result;
         }
     };
-    self.text = {
+    self.string = {
         /**
          * Cleans provided text from unnecessary whitespace.
          * @param {string} text
          * @returns {string}
          */
-        clean: function (text) {
-            if (!self.utils.__check(text, "text")) {
+        get: function (input, key, separator, delimiter) {
+            if (separator === void 0) { separator = "="; }
+            if (delimiter === void 0) { delimiter = ";"; }
+            var result = [];
+            if (!self.utils.__check(input, "input")) {
+                return result;
+            }
+            if (!self.utils.__check(key, "key")) {
+                return result;
+            }
+            key = key + separator;
+            var chunks = input.split(delimiter);
+            for (var i in chunks) {
+                var pair = self.string.clean(chunks[i]);
+                if (pair.indexOf(key) === 0) {
+                    result.push(pair.slice(key.length, pair.length));
+                }
+            }
+            return result;
+        },
+        /**
+         * Cleans provided text from unnecessary whitespace.
+         * @param {string} input
+         * @returns {string}
+         */
+        clean: function (input) {
+            if (!self.utils.__check(input, "input")) {
                 return "";
             }
-            return text.replace(/\s+/g, ' ').trim();
+            return input.replace(/\s+/g, ' ').trim();
         }
     };
     self.utils = {
