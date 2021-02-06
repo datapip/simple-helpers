@@ -85,9 +85,12 @@ interface Window {
             if(!self.utils.__check(name, "name")) {
                 return;
             }
-
+            
             if(!self.cookies.enabled()) {
-                return callback(new Error("Cookies disabled."));
+                if(callback && typeof callback === "function") {
+                    return callback(new Error("Cookies disabled."));
+                } 
+                return;
             }
 
             let result: string[] = [];
@@ -264,7 +267,9 @@ interface Window {
                     callback(null, "Querystring appended.");
                 }
             } catch(err) {
-                callback(err);
+                if(callback && typeof callback === "function") {
+                    callback(err);
+                }
             }
         },
 

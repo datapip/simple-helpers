@@ -63,7 +63,10 @@
                 return;
             }
             if (!self.cookies.enabled()) {
-                return callback(new Error("Cookies disabled."));
+                if (callback && typeof callback === "function") {
+                    return callback(new Error("Cookies disabled."));
+                }
+                return;
             }
             var result = [];
             result.push(name + '=' + value);
@@ -216,7 +219,9 @@
                 }
             }
             catch (err) {
-                callback(err);
+                if (callback && typeof callback === "function") {
+                    callback(err);
+                }
             }
         },
         /**
