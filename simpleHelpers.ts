@@ -211,6 +211,65 @@ interface Window {
         },
 
         /**
+         * Delets a first-party cookie by name.
+         * @param {string} querystring 
+         * @param {string} scope        optional - default is: exit
+         * @param {string} domain       optional - default is: document.location.hostname
+         * @param {function} callback   optional - type: error-first callback
+         * @returns {undefined}
+         */
+        appendto: function(querystring: string, scope: string = "exit", domain: string = document.location.hostname, callback: Function): void {
+            
+            if(!self.utils.__check(querystring, "querystring")) {
+                return;
+            }
+
+            try{
+                if(querystring.charAt(0)==="?") {
+                    querystring = querystring.slice(1);
+                }
+                const linkList = document.getElementsByTagName("a");
+
+                for(let i in linkList) {
+                    
+                    const element = linkList[i];
+                    
+                    if(!element.href || element.href.indexOf("#") === 0) {
+                        continue;
+                    }
+
+                    if(element.href.indexOf(domain) != -1 && scope === "exit") {
+                        continue;
+                    } 
+
+                    if(element.href.indexOf("?") === -1) {
+                        if(element.href.indexOf("#") === -1) {
+                            element.href += ("?" + querystring);
+                        } else {
+                            const chunks = element.href.split("#");
+                            element.href = chunks[0] + "?" + querystring + "#" + chunks[1];
+                        }
+                    } else {
+                        if(element.href.indexOf("#") === -1) {
+                            element.href += ("&" + querystring);
+                        } else {
+                            const chunks = element.href.split("#");
+                            element.href = chunks[0] + "&" + querystring + "#" + chunks[1];
+                        }
+                    }
+
+                }
+
+                if(callback && typeof callback === "function") {
+                    callback(null, "Querystring appended.");
+                }
+            } catch(err) {
+                callback(err);
+            }
+        },
+
+
+        /**
          * Converts query string to JSON.
          * @param {string} querystring  optional - default is: document.location.search 
          * @returns {object}
