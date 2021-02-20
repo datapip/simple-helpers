@@ -15,6 +15,8 @@ interface Window {
     window.simpleHelpers = window.simpleHelpers || {};
     const self = window.simpleHelpers;
 
+    self.version = "1.0.0";
+
     self.cookies = {
 
         /**
