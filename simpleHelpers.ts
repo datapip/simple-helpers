@@ -15,8 +15,6 @@ interface Window {
     window.simpleHelpers = window.simpleHelpers || {};
     const self = window.simpleHelpers;
 
-    self.version = "1.0.0";
-
     self.cookies = {
 
         /**
@@ -54,7 +52,7 @@ interface Window {
 
             result = self.string.get(document.cookie, name)[0];
             
-            if(decode) {
+            if(decode && result) {
                 result = decodeURIComponent(result);
             }
 
@@ -145,7 +143,7 @@ interface Window {
     }
 
 
-    self.querystring = {
+    self.query = {
 
         /**
          * Returns the value of a provided query string paramter.

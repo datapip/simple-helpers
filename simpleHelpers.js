@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Main code.
  */
@@ -32,7 +33,7 @@
                 return result;
             }
             result = self.string.get(document.cookie, name)[0];
-            if (decode) {
+            if (decode && result) {
                 result = decodeURIComponent(result);
             }
             return result;
@@ -112,7 +113,7 @@
             }
         }
     };
-    self.querystring = {
+    self.query = {
         /**
          * Returns the value of a provided query string paramter.
          * @param {string} key
