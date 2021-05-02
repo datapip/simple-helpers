@@ -232,8 +232,11 @@
     };
     self.string = {
         /**
-         * Cleans provided text from unnecessary whitespace.
-         * @param {string} text
+         * Extracts value from a given string by a given key.
+         * @param {string} input
+         * @param {string} key
+         * @param {string} separator    optional - default is: =
+         * @param {string} delimiter    optional - default is: ;
          * @returns {string}
          */
         get: function (input, key, separator, delimiter) {
