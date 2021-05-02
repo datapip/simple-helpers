@@ -11,9 +11,9 @@
          * @returns {boolean}
          */
         enabled: function () {
-            window.document.cookie = "helperTestCookie=1";
-            if (window.document.cookie.indexOf("helperTestCookie") != -1) {
-                document.cookie = "helperTestCookie=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
+            window.document.cookie = "simpleHelpersTestCookie=1";
+            if (window.document.cookie.indexOf("simpleHelpersTestCookie") != -1) {
+                document.cookie = "simpleHelpersTestCookie=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
                 return true;
             }
             else {
@@ -95,14 +95,16 @@
         /**
          * Delets a first-party cookie by name.
          * @param {string} name
+         * @param {string} domain       optional - default is: none
          * @param {function} callback   optional - type: error-first callback
          * @returns {undefined}
          */
-        "delete": function (name, callback) {
+        "delete": function (name, domain, callback) {
+            if (domain === void 0) { domain = ""; }
             if (!self.utils.__check(name, "name")) {
                 return;
             }
-            self.cookies.set(name, "", "", -1);
+            self.cookies.set(name, "", domain, -1);
             if (callback && typeof callback === "function") {
                 if (!self.cookies.get(name)) {
                     return callback(null, "Cookie deleted.");
@@ -131,7 +133,7 @@
             return result;
         },
         /**
-         * Adds a query string paramter with prorvided name and value.
+         * Adds a parameter with provided name and value to the query string.
          * @param {string} key
          * @param {string} value
          * @param {string} querystring  optional - default is: document.location.search
@@ -157,7 +159,7 @@
             }
         },
         /**
-         * Delets a first-party cookie by name.
+         * Appends a query string to all links of the current page.
          * @param {string} querystring
          * @param {string} scope        optional - default is: exit
          * @param {string} domain       optional - default is: document.location.hostname
