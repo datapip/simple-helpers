@@ -6,6 +6,27 @@ interface Window {
 }
 
 
+/**
+ * Structure
+ * 
+ * simpleHelpers
+ *  |_cookies
+ *      |_ enabled()
+ *      |_ get()
+ *      |_ set()
+ *      |_ delete()
+ *  |_query
+ *      |_ get()
+ *      |_ add()
+ *      |_ appendto()
+ *      |_ tojson()
+ *  |_string
+ *      |_ get()
+ *      |_ clean()
+ *  |_number
+ *      |_ random()
+ */
+
 
 /**
  * Main code.
@@ -266,6 +287,10 @@ interface Window {
          */
         tojson: (querystring: string = window.document.location.search): Object => {
 
+            if(!self.utils.__check(querystring, "querystring")) {
+                return {};
+            }
+
             let result: any = {};
 
             const queries = (querystring.charAt(0)==="?") ? (querystring.slice(1).split("&")) : (querystring.split("&"));
@@ -329,6 +354,29 @@ interface Window {
             }
 
             return input.replace(/\s+/g, ' ').trim();
+
+        }
+
+    }
+
+
+    self.number = {
+
+        /**
+         * Returns random number between 1 and max.
+         * @param {number} max 
+         * @returns {number}
+         */
+        random: (max: number = 10): number => {
+
+            if(!self.utils.__check(max, "max")) {
+                return 0;
+            }
+
+            const random = Math.random();
+            const result = Math.floor(random * max) + 1;
+
+            return result;
 
         }
 
