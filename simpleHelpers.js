@@ -1,5 +1,25 @@
 "use strict";
 /**
+ * Structure
+ *
+ * simpleHelpers
+ *  |_cookies
+ *      |_ enabled()
+ *      |_ get()
+ *      |_ set()
+ *      |_ delete()
+ *  |_query
+ *      |_ get()
+ *      |_ add()
+ *      |_ appendto()
+ *      |_ tojson()
+ *  |_string
+ *      |_ get()
+ *      |_ clean()
+ *  |_number
+ *      |_ random()
+ */
+/**
  * Main code.
  */
 (function () {
@@ -221,6 +241,9 @@
          */
         tojson: function (querystring) {
             if (querystring === void 0) { querystring = window.document.location.search; }
+            if (!self.utils.__check(querystring, "querystring")) {
+                return {};
+            }
             var result = {};
             var queries = (querystring.charAt(0) === "?") ? (querystring.slice(1).split("&")) : (querystring.split("&"));
             for (var i in queries) {
@@ -269,6 +292,22 @@
                 return "";
             }
             return input.replace(/\s+/g, ' ').trim();
+        }
+    };
+    self.number = {
+        /**
+         * Returns random number between 1 and max.
+         * @param {number} max
+         * @returns {number}
+         */
+        random: function (max) {
+            if (max === void 0) { max = 10; }
+            if (!self.utils.__check(max, "max")) {
+                return 0;
+            }
+            var random = Math.random();
+            var result = Math.floor(random * max) + 1;
+            return result;
         }
     };
     self.utils = {
