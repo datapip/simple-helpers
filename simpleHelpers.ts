@@ -2,28 +2,51 @@
  * Needed declarations.
  */
 interface Window { 
-    simpleHelpers: any; 
+    simpleHelpers: {
+        cookies: {
+            enabled(): boolean;
+            get(name: string, decode?: boolean): string;
+            set(name: string, value: string, domain?: string, days?: number, secure?: boolean, samesite?: string, callback?: Function): void;
+            delete(name: string, domain: string, callback: Function): void;
+        },
+        query: {
+            get(key: string, querystring?: string): string[];
+            add(key: string, value: string, querystring?: string): string;
+            appendto(querystring: string, scope?: string, domain?: string, callback?: Function): void;
+            tojson(querystring: string): Object;
+        },
+        string: {
+            get(input: string, key: string, separator?: string, delimiter?: string): string[];
+            clean(input: string): string;
+        },
+        number: {
+            random(max?: number): number;
+        },
+        utils: {
+            __check(input: any, name: string): boolean;
+        }
+    }; 
 }
 
 
 /**
  * Structure
  * 
- * simpleHelpers
- *  |_cookies
+ * simpleHelpers{}
+ *  |_cookies{}
  *      |_ enabled()
  *      |_ get()
  *      |_ set()
  *      |_ delete()
- *  |_query
+ *  |_query{}
  *      |_ get()
  *      |_ add()
  *      |_ appendto()
  *      |_ tojson()
- *  |_string
+ *  |_string{}
  *      |_ get()
  *      |_ clean()
- *  |_number
+ *  |_number{}
  *      |_ random()
  */
 
@@ -196,7 +219,7 @@ interface Window {
          * @returns {string}
          */
         add: function(key: string, value: string, querystring: string = window.document.location.search): string {
-            
+
             if(!self.utils.__check(key, "key")) {
                 return "";
             }

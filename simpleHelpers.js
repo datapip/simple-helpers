@@ -2,21 +2,21 @@
 /**
  * Structure
  *
- * simpleHelpers
- *  |_cookies
+ * simpleHelpers{}
+ *  |_cookies{}
  *      |_ enabled()
  *      |_ get()
  *      |_ set()
  *      |_ delete()
- *  |_query
+ *  |_query{}
  *      |_ get()
  *      |_ add()
  *      |_ appendto()
  *      |_ tojson()
- *  |_string
+ *  |_string{}
  *      |_ get()
  *      |_ clean()
- *  |_number
+ *  |_number{}
  *      |_ random()
  */
 /**
